@@ -1,33 +1,32 @@
-<h1>Listing movies</h1>
+<h1>Hitbliss Catalog</h1>
 
 <table>
   <tr>
     <th>Title</th>
-    <th>Image url</th>
+    <th>Image</th>
     <th>Last seen</th>
     <th>Rt title</th>
     <th>Rt description</th>
     <th>Rt rating</th>
-    <th></th>
-    <th></th>
+    <th>Rt Critics Rating</th>
+    <th>Rt Audience Rating</th>
+    <th>Year</th>
     <th></th>
   </tr>
 
 <% @movies.each do |movie| %>
   <tr>
     <td><%= movie.title %></td>
-    <td><%= movie.image_url %></td>
+    <td><%= image_tag movie.image_url %></td>
     <td><%= movie.last_seen %></td>
     <td><%= movie.rt_title %></td>
     <td><%= movie.rt_description %></td>
     <td><%= movie.rt_rating %></td>
-    <td><%= link_to 'Show', movie %></td>
-    <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
-    <td><%= link_to 'Destroy', movie, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= movie.rt_critics_rating %></td>
+    <td><%= movie.rt_audience_rating %></td>
+    <td><%= movie.rt_year %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New Movie', new_movie_path %>
