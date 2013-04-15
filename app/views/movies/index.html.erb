@@ -4,6 +4,7 @@
   <tr>
     <th>Title</th>
     <th>Image</th>
+    <th>First seen</th>
     <th>Last seen</th>
     <th>Rt title</th>
     <th>Rt description</th>
@@ -17,7 +18,8 @@
   <tr>
     <td><%= movie.title %></td>
     <td><%= image_tag movie.image_url %></td>
-    <td><%= movie.last_seen %></td>
+    <td><%= movie.created_at.in_time_zone("US/Pacific").strftime("%-d %b %Y") %></td>
+    <td><%= movie.last_seen.strftime("%-d %b %Y") %></td>
     <td><%= movie.rt_title %></td>
     <td><%= movie.rt_description %></td>
     <td><%= movie.rt_critics_rating %></td>
