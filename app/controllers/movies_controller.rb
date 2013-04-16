@@ -2,18 +2,19 @@ class MoviesController < ApplicationController
   # GET /movies
   # GET /movies.json
   def index
-    @movies = Movie.all.sort do |a, b|
-      ra, rb = a.rt_critics_rating, b.rt_critics_rating
-      if ra.nil? && rb.nil?
-        0
-      elsif ra.nil?
-        1
-      elsif rb.nil?
-        -1
-      else
-        rb <=> ra
-      end
-    end
+    # @movies = Movie.all.sort do |a, b|
+    #   ra, rb = a.rt_critics_rating, b.rt_critics_rating
+    #   if ra.nil? && rb.nil?
+    #     0
+    #   elsif ra.nil?
+    #     1
+    #   elsif rb.nil?
+    #     -1
+    #   else
+    #     rb <=> ra
+    #   end
+    # end
+    @movies = Movie.order('created_at DESC').all
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,32 +1,68 @@
-<h1>Hitbliss Catalog</h1>
+<h1>
+	Hitbliss Catalog
+	<button class="filter" data-filter=".movie">all</button>
+	<button class="filter" data-filter=".fresh">fresh</button>
+	<button class="filter" data-filter=".new">new</button>
+</h1>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Image</th>
-    <th>First seen</th>
-    <th>Last seen</th>
-    <th>Rt title</th>
-    <th>Rt description</th>
-    <th>Rt Critics Rating</th>
-    <th>Rt Audience Rating</th>
-    <th>Year</th>
-    <th></th>
-  </tr>
+<div class="catalog">
+	<% @movies.each do |movie| %>
+		<% freshness = (movie.rt_critics_rating && movie.rt_critics_rating >= 60) ? "fresh" : "rotten" %>
+		<% rating = movie.rt_critics_rating || 0 %>
+		<%= content_tag :div, class: "movie #{freshness}", "data-rating" => rating do %>
+			<%= image_tag movie.image_url %>
+			<div class="rating">
+				<%= rating %>
+			</div>
+		<% end %>
+	<% end %>
+</div>
 
-<% @movies.each do |movie| %>
-  <tr>
-    <td><%= movie.title %></td>
-    <td><%= image_tag movie.image_url %></td>
-    <td><%= movie.created_at.in_time_zone("US/Pacific").strftime("%-d %b %Y") %></td>
-    <td><%= movie.last_seen.strftime("%-d %b %Y") %></td>
-    <td><%= movie.rt_title %></td>
-    <td><%= movie.rt_description %></td>
-    <td><%= movie.rt_critics_rating %></td>
-    <td><%= movie.rt_audience_rating %></td>
-    <td><%= movie.rt_year %></td>
-  </tr>
-<% end %>
-</table>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.catalog').isotope({
+			itemSelector: '.movie',
+			getSortData: {
+				rating: function($el) {
+					return $el.data('rating');
+				}
+			}
+		});
+		$('.filter').each(function(index, btn) {
+			var $btn = $(btn);
+			$btn.click(function() {
+				$('.catalog').isotope({
+					filter: $btn.data('filter'),
+					sortBy: 'rating',
+					sortAscending: false
+				});
+			});
+		});
+	});
+</script>
 
-<br />
+<style type="text/css">
+	.movie {
+		width: 181px;
+		height: 268px;
+		display: inline-block;
+		position: relative;
+	}
+	.rating {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		text-align: center;
+		background: red;
+		color: white;
+		border-radius: 100px;
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		font-weight: bold;
+		z-index: 3;
+	}
+	.movie.rotten .rating {
+		background: green;
+	}
+</style>
